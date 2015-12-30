@@ -11,6 +11,7 @@ from django_flickr_gallery.models.managers import AlbumFeaturedManager
 from django_flickr_gallery.models.managers import AlbumPublishedManager
 
 from django_flickr_gallery.utils import get_photoset, AttributeDict
+from django_flicker_gallery.models import FlickrUser
 
 
 @python_2_unicode_compatible
@@ -49,6 +50,10 @@ class BaseFlickrAlbum(models.Model):
 
     creation_date = models.DateTimeField(
         _('creation date'), auto_now_add=True)
+
+    album_owner = models.ForeignKey(
+        FlickrUser, on_delete=models.CASCADE
+    )
 
     objects = models.Manager()
     published = AlbumPublishedManager()
