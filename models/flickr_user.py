@@ -72,8 +72,8 @@ class BaseFlickrUser(models.Model):
             self.save()
 
     ######### Do I need this? I mean I could always just return the users profile path.
-    def get_absolute_url(self):
-        return reverse('gallery-photos', kwargs={"slug": self.slug})
+    #def get_absolute_url(self):
+    #    return reverse('gallery-photos', kwargs={"slug": self.slug})
 
 
     #ensure this is an abstract class
@@ -84,6 +84,7 @@ class BaseFlickrUser(models.Model):
         abstract = True
 
 class FlickrUser(BaseFlickrUser):
+    #handling this in this manner for consistency sake at the moment
     """
     Final abstract flickr user class assembling
     all the abstract album model classes into a single one.
