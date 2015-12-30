@@ -25,7 +25,7 @@ class BaseFlickrUser(models.Model):
     nsid = models.CharField(max_length=50, null=True, blank=True)
     token = models.CharField(max_length=50, null=True, blank=True)
     ispro = models.BooleanField(default=False, null=True, blank=True)
-    isadmin = models.BooleanField(default=False, null=True, blank=True)
+    isadmin = models.BooleanField(default=False, null=False, blank=False)
     photos_url = models.URLField(max_length=255, null=True, blank=True)
     profile_url = models.URLField(max_length=255, null=True, blank=True)
     perms = models.CharField(max_length=20, default='read', null=True, blank=True)
@@ -59,16 +59,19 @@ class BaseFlickrUser(models.Model):
             self.sync(commit=False)
         super(BaseFlickrUser, self).save(*args, **kwargs)
 
+    ######## NEED TO COME UP WITH A PLAN FOR SYNCING USER> WHAT TO DO WITH USER FUNCTION
+    ######## Do I involve token getting in the process?
+    ######## Do I attempt to populate every single field or just critical ones?
     def sync(self, commit=True):
-        self.title = self.photoset.title
-        self.slug = slugify(self.title)
-        self.description = self.photoset.description
+        self.full_name = self.user.full_name
+        self.slug = slugify(self.username)
         self.last_sync = timezone.now()
 
         # force commit changes
         if commit:
             self.save()
 
+    ######### Do I need this? I mean I could always just return the users profile path.
     def get_absolute_url(self):
         return reverse('gallery-photos', kwargs={"slug": self.slug})
 
